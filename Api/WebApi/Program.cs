@@ -1,4 +1,5 @@
 using Infra;
+using Core;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSharedExtensionsInfra(builder.Configuration);
+builder.Services.AddApplicationHandlers();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api teste técnica", Version = "v1" });
