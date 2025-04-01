@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace Core.Services.AuthenticateService;
+namespace Core.Services.AuthenticateService.Token;
 
 public class TokenJwtBuilder
 {
@@ -45,7 +45,7 @@ public class TokenJwtBuilder
 
     public TokenJwtBuilder AddClaims(string type, string value)
     {
-        this.claims.Add(type, value);
+        claims.Add(type, value);
         return this;
     }
 
@@ -63,14 +63,14 @@ public class TokenJwtBuilder
 
     private void EnsureArguments()
     {
-        if (this.securityKey is null)
-            throw new ArgumentNullException(nameof(this.securityKey));
+        if (securityKey is null)
+            throw new ArgumentNullException(nameof(securityKey));
         if (string.IsNullOrEmpty(subject))
-            throw new ArgumentNullException(nameof(this.subject));
-        if (string.IsNullOrEmpty(this.issuer))
-            throw new ArgumentNullException(nameof(this.issuer));
-        if (string.IsNullOrEmpty(this.audience))
-            throw new ArgumentNullException(nameof(this.audience));
+            throw new ArgumentNullException(nameof(subject));
+        if (string.IsNullOrEmpty(issuer))
+            throw new ArgumentNullException(nameof(issuer));
+        if (string.IsNullOrEmpty(audience))
+            throw new ArgumentNullException(nameof(audience));
     }
 
     public TokenJwt Builder()
@@ -79,9 +79,9 @@ public class TokenJwtBuilder
 
         var claims = new List<Claim>()
         {
-            new Claim(JwtRegisteredClaimNames.Sub, this.audience),
+            new Claim(JwtRegisteredClaimNames.Sub, audience),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.Email, this.email)
+            new Claim(ClaimTypes.Email, email)
         };
 
         claims.AddRange(this.claims.Select(item => new Claim(item.Key, item.Value)));
@@ -91,7 +91,7 @@ public class TokenJwtBuilder
             audience: audience,
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
-            signingCredentials: new SigningCredentials(this.securityKey, SecurityAlgorithms.HmacSha256));
+            signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
 
         return new TokenJwt(token);
     }

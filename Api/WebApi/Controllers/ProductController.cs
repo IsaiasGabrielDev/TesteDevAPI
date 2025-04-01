@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Services.ProductServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -7,6 +8,7 @@ namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = "Bearer")]
 public class ProductController : ControllerBase
 {
     [HttpGet]

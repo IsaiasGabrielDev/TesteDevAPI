@@ -68,6 +68,7 @@ namespace Core
 
             #region Inject User
             services.AddTransientFunction<RegisterUserFunction, RegisterUserHandler>();
+            services.AddTransientFunction<LoginUserFunction, LoginUserHandler>();
             #endregion
 
             return services;

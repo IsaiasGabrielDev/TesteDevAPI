@@ -1,6 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 
-namespace Core.Services.AuthenticateService;
+namespace Core.Services.AuthenticateService.Token;
 
 public class TokenJwt
 {
