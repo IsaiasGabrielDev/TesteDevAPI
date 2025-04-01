@@ -13,7 +13,7 @@ builder.Services.AddSharedExtensionsInfra(builder.Configuration);
 builder.Services.AddApplicationHandlers();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api teste técnica", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api teste técnico", Version = "v1" });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -55,6 +55,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseAuthentication();
 
 app.MapControllers();
 

@@ -1,10 +1,15 @@
 ﻿using Core.Abstraction;
 using Core.Entities;
+using Core.Helpers;
+using Core.Services.AuthenticateService;
 using Core.Services.CategoryServices;
 using Core.Services.ProductServices;
 using Core.Validators;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Core
 {
@@ -12,8 +17,40 @@ namespace Core
     {
         public static IServiceCollection AddApplicationHandlers(this IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(option =>
+                {
+                    option.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+
+                        ValidIssuer = Config.IssuerToken,
+                        ValidAudience = Config.AudienceToken,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Config.SecurityTokenKey))
+                    };
+
+                    option.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            Console.WriteLine("OnAuthenticationFailed: " + context.Exception.Message);
+                            return Task.CompletedTask;
+                        },
+
+                        OnTokenValidated = context =>
+                        {
+                            Console.WriteLine("OnTokenValidated: " + context.SecurityToken);
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
             services.AddScoped<IValidator<Category>, CategoryValidator>();
             services.AddScoped<IValidator<Product>, ProductValidator>();
+            services.AddScoped<IValidator<User>, UserValidator>();
 
             #region Inject Category
             services.AddTransientFunction<AddCategoryFunction, AddCategoryHandler>();
@@ -28,6 +65,11 @@ namespace Core
             services.AddTransientFunction<UpdateProductFunction, UpdateProductHandler>();
             services.AddTransientFunction<DeleteProductFunction, DeleteProductHandler>();
             #endregion
+
+            #region Inject User
+            services.AddTransientFunction<RegisterUserFunction, RegisterUserHandler>();
+            #endregion
+
             return services;
         }
 

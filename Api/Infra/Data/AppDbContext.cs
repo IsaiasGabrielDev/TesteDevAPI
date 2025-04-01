@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Data;
 
-public sealed class AppDbContext : DbContext
+public sealed partial class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
@@ -13,7 +13,4 @@ public sealed class AppDbContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
-
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Product> Products { get; set; }
 }
