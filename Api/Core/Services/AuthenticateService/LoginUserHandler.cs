@@ -15,7 +15,7 @@ internal sealed class LoginUserHandler(
     {
         var user = await _repository.GetUserByEmail(login.Email, cancellationToken);
         if (user is null)
-            return new LoginResponse(false, null!);
+            return new LoginResponse(false, "Usuário não encontrado");
 
         if (!CryptographyHelper.VerifyPassword(login.Password, user.Password!))
             return new LoginResponse(false, "Senha incorreta");

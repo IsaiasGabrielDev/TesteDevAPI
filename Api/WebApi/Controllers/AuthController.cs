@@ -16,7 +16,7 @@ public class AuthController : ControllerBase
         var (isLogged, message) = await function(login, cancellationToken);
         return isLogged
             ? Ok(message)
-            : StatusCode(StatusCodes.Status500InternalServerError, message);
+            : BadRequest(message);
     }
 
     [HttpPost("Register")]
@@ -28,6 +28,6 @@ public class AuthController : ControllerBase
         var (user, errorMessage) = await function(registerUser, cancellationToken);
         return string.IsNullOrEmpty(errorMessage)
             ? Ok(user)
-            : StatusCode(StatusCodes.Status500InternalServerError, errorMessage);
+            : BadRequest(errorMessage);
     }
 }

@@ -32,7 +32,7 @@ public class CategoryController : ControllerBase
         var (category, errorMessage) = await addCategoryFunction(categoryDTO, cancellationToken);
         return string.IsNullOrEmpty(errorMessage)
             ? Ok(category)
-            : StatusCode(StatusCodes.Status500InternalServerError, errorMessage);
+            : BadRequest(errorMessage);
     }
 
     [HttpPut]
@@ -44,7 +44,7 @@ public class CategoryController : ControllerBase
         var (category, errorMessage) = await updateCategoryFunction(categoryEdit, cancellationToken);
         return string.IsNullOrEmpty(errorMessage)
             ? Ok(category)
-            : StatusCode(StatusCodes.Status500InternalServerError, errorMessage);
+            : BadRequest(errorMessage);
     }
 
     [HttpDelete]
@@ -56,6 +56,6 @@ public class CategoryController : ControllerBase
         var (isDelete, errorMessage) = await deleteCategoryFunction(categoryId, cancellationToken);
         return isDelete
             ? Ok()
-            : StatusCode(StatusCodes.Status500InternalServerError, errorMessage);
+            : BadRequest(errorMessage);
     }
 }

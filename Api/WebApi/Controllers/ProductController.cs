@@ -32,7 +32,7 @@ public class ProductController : ControllerBase
         var (product, errorMessage) = await function(addProductDTO, cancellation);
         return string.IsNullOrEmpty(errorMessage)
             ? Ok(product)
-            : StatusCode(StatusCodes.Status500InternalServerError, errorMessage);
+            : BadRequest(errorMessage);
     }
 
     [HttpPut]
@@ -44,7 +44,7 @@ public class ProductController : ControllerBase
         var (updatedProduct, errorMessage) = await function(product, cancellationToken);
         return string.IsNullOrEmpty(errorMessage)
             ? Ok(updatedProduct)
-            : StatusCode(StatusCodes.Status500InternalServerError, errorMessage);
+            : BadRequest(errorMessage);
     }
 
     [HttpDelete]
@@ -56,6 +56,6 @@ public class ProductController : ControllerBase
         var (isDelete, errorMessage) = await function(productId, cancellationToken);
         return isDelete
             ? Ok()
-            : StatusCode(StatusCodes.Status500InternalServerError, errorMessage);
+            : BadRequest(errorMessage);
     }
 }
