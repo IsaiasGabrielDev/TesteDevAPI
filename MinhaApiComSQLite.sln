@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Api\Core\Core.csproj", "{E0EE3717-E8A5-475D-8137-64B42BDCE6FA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Users\Felipe\OneDrive\Área de Trabalho\ApiDocumentation.md = ..\..\Users\Felipe\OneDrive\Área de Trabalho\ApiDocumentation.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WindowsForm", "WindowsForm", "{AD94DB0F-35C5-41D9-9E11-674E3E19EA1C}"
 EndProject
