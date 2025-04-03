@@ -10,13 +10,17 @@ internal sealed class ProductRepository(AppDbContext context) : IProductReposito
     private readonly AppDbContext _context = context;
 
     #region Selects
-    public async Task<IEnumerable<Product>> GetAll(CancellationToken cancellationToken, int pageNumber = 1, int pageSize = 20) =>
-    await _context.Products
-        .AsNoTracking()
-        .OrderBy(p => p.Name)
-        .Skip((pageSize - 1) * pageSize)
-        .Take(pageSize)
-        .ToListAsync(cancellationToken);
+    public async Task<object> GetAll(CancellationToken cancellationToken, int pageNumber = 1, int pageSize = 20)
+    {
+        var products = await _context.Products.AsNoTracking().Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
+        var totalRecords = await _context.Products.AsNoTracking().CountAsync(cancellationToken);
+        return new
+        {
+            Products = products,
+            TotalRecords = totalRecords
+        };
+    }
+        
 
     public async Task<Product> GetById(int productId, CancellationToken cancellationToken) =>
         await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);

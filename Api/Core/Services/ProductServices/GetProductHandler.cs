@@ -9,15 +9,20 @@ internal sealed class GetProductHandler(
     private readonly IProductRepository _repository = repository;
     public GetProductFunction HandlerFunction => Handle;
 
-    private async Task<(IEnumerable<Product>? products, Product? product)> Handle(
-        int productId, CancellationToken cancellationToken)
+    private async Task<(object? products, Product? product)> Handle(
+        GetProductQuery query, CancellationToken cancellationToken)
     {
-        if(productId > 0)
-            return (null, await _repository.GetById(productId, cancellationToken));
+        if(query.ProductId > 0)
+            return (null, await _repository.GetById(query.ProductId, cancellationToken));
 
-        return (await _repository.GetAll(cancellationToken), null);
+        return (await _repository.GetAll(cancellationToken, query.PageNumber, query.PageSize), null);
     }
 }
 
-public delegate Task<(IEnumerable<Product>? products, Product? product)> GetProductFunction(
-    int productId, CancellationToken cancellationToken);
+public delegate Task<(object? products, Product? product)> GetProductFunction(
+    GetProductQuery query, CancellationToken cancellationToken);
+
+public sealed record GetProductQuery(
+    int ProductId,
+    int PageNumber,
+    int PageSize);

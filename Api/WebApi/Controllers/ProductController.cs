@@ -15,9 +15,12 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> GetProduct(
         [FromServices] GetProductFunction function,
         [FromQuery] int productId,
+        [FromQuery] int pageNumber,
+        [FromQuery] int pageSize,
         CancellationToken cancellationToken)
     {
-        var (products, product) = await function(productId, cancellationToken);
+        GetProductQuery query = new(productId, pageNumber, pageSize);
+        var (products, product) = await function(query, cancellationToken);
         return product is not null
             ? Ok(product)
             : Ok(products);

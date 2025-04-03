@@ -16,6 +16,10 @@ internal static class Program
         var serviceProvider = ConfigureServices();
 
         var loginForm = serviceProvider.GetRequiredService<frmLogin>();
+        serviceProvider.GetRequiredService<frmRegister>();
+        serviceProvider.GetRequiredService<frmListProduct>();
+        serviceProvider.GetRequiredService<frmProduct>();
+
         Application.Run(loginForm);
     }
 
@@ -40,9 +44,27 @@ internal static class Program
             return new AuthService(httpClient, tokenService);
         });
 
+        services.AddTransient<IProductService, ProductService>(provider =>
+        {
+            var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+            var httpClient = httpClientFactory.CreateClient("ApiClient");
+            return new ProductService(httpClient);
+        });
+
+        services.AddTransient<ICategoryService, CategoryService>(provider =>
+        {
+            var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+            var httpClient = httpClientFactory.CreateClient("ApiClient");
+            return new CategoryService(httpClient);
+        });
+
         services.AddTransient<frmLogin>();
         services.AddTransient<frmRegister>();
+        services.AddTransient<frmListProduct>();
+        services.AddTransient<frmProduct>();
+        services.AddSingleton<IServiceProvider>(sp => sp);
 
         return services.BuildServiceProvider();
     }
+
 }

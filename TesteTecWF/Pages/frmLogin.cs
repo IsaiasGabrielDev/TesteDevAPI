@@ -1,4 +1,5 @@
-﻿using TesteTecWF.Interfaces;
+﻿using Microsoft.Extensions.DependencyInjection;
+using TesteTecWF.Interfaces;
 using TesteTecWF.Models;
 
 namespace TesteTecWF.Pages;
@@ -6,12 +7,15 @@ namespace TesteTecWF.Pages;
 public partial class frmLogin : Form
 {
     private readonly IAuthService _authService;
-    public frmLogin(IAuthService authService)
+    private readonly IServiceProvider _serviceProvider;
+
+    public frmLogin(IAuthService authService, IServiceProvider serviceProvider)
     {
         InitializeComponent();
 
         lnkRegister.Focus();
         _authService = authService;
+        _serviceProvider = serviceProvider;
     }
 
     private async void btnLogin_Click(object sender, EventArgs e)
@@ -27,7 +31,9 @@ public partial class frmLogin : Form
 
         if (response.Status)
         {
-            MessageBox.Show("Login efetuado com sucesso!");
+            frmListProduct frmListProduct = _serviceProvider.GetRequiredService<frmListProduct>();
+            frmListProduct.Show();
+            this.Hide();
         }
         else
         {
@@ -37,7 +43,7 @@ public partial class frmLogin : Form
 
     private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
-        frmRegister frmRegister = new(_authService);
+        var frmRegister = _serviceProvider.GetRequiredService<frmRegister>();
         frmRegister.Show();
         this.Hide();
     }
