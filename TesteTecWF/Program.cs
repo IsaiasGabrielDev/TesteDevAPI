@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TesteTecWF.Handler;
 using TesteTecWF.Interfaces;
 using TesteTecWF.Pages;
+using TesteTecWF.Reports;
 using TesteTecWF.Services;
 
 namespace TesteTecWF;
@@ -21,6 +22,7 @@ internal static class Program
         serviceProvider.GetRequiredService<frmProduct>();
         serviceProvider.GetRequiredService<frmCategory>();
         serviceProvider.GetRequiredService<frmCategoryDetails>();
+        serviceProvider.GetRequiredService<frmProductHistoryReport>();
 
         Application.Run(loginForm);
     }
@@ -59,6 +61,13 @@ internal static class Program
             var httpClient = httpClientFactory.CreateClient("ApiClient");
             return new CategoryService(httpClient);
         });
+        
+        services.AddTransient<IProductHistoryService, ProductHistoryService>(provider =>
+        {
+            var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+            var httpClient = httpClientFactory.CreateClient("ApiClient");
+            return new ProductHistoryService(httpClient);
+        });
 
         services.AddTransient<frmLogin>();
         services.AddTransient<frmRegister>();
@@ -66,6 +75,7 @@ internal static class Program
         services.AddTransient<frmProduct>();
         services.AddTransient<frmCategory>();
         services.AddTransient<frmCategoryDetails>();
+        services.AddTransient<frmProductHistoryReport>();
         services.AddSingleton<IServiceProvider>(sp => sp);
 
         return services.BuildServiceProvider();

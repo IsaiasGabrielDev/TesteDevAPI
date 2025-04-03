@@ -35,7 +35,7 @@ public class ProductController : ControllerBase
     {
         string userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value!;
         if (string.IsNullOrEmpty(userEmail))
-            return BadRequest("Usuário não autorizado");
+            return Unauthorized("Usuário não autorizado");
 
         var (product, errorMessage) = await function(addProductDTO, userEmail, cancellation);
         return string.IsNullOrEmpty(errorMessage)
@@ -51,7 +51,7 @@ public class ProductController : ControllerBase
     {
         string userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value!;
         if (string.IsNullOrEmpty(userEmail))
-            return BadRequest("Usuário não autorizado");
+            return Unauthorized("Usuário não autorizado");
 
         var (updatedProduct, errorMessage) = await function(product, userEmail, cancellationToken);
         return string.IsNullOrEmpty(errorMessage)

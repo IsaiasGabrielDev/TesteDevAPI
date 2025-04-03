@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TesteTecWF.Interfaces;
 using TesteTecWF.Models;
+using TesteTecWF.Reports;
 
 namespace TesteTecWF.Pages;
 
@@ -143,6 +144,13 @@ public partial class frmListProduct : Form
     {
         var frmCategory = _serviceProvider.GetRequiredService<frmCategory>();
         frmCategory.Show();
+        this.Hide();
+    }
+
+    private void btnProductHistoryReport_Click(object sender, EventArgs e)
+    {
+        var fromProductHistoryReport = _serviceProvider.GetRequiredService<frmProductHistoryReport>();
+        fromProductHistoryReport.Show();
         this.Hide();
     }
 }

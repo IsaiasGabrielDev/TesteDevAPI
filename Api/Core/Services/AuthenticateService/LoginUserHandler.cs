@@ -20,18 +20,13 @@ internal sealed class LoginUserHandler(
         if (!CryptographyHelper.VerifyPassword(login.Password, user.Password!))
             return new LoginResponse(false, "Senha incorreta");
 
-        Dictionary<string, string> claims = new()
-        {
-            { "userName", user.Name! }
-        };
-
         var token = new TokenJwtBuilder()
             .AddSecurityKey(JwtSecurityKey.Create(Config.SecurityTokenKey))
             .AddSubject("NineShed V1")
             .AddIssuer(Config.IssuerToken)
             .AddAudience(Config.AudienceToken)
+            .AddName(user.Name!)
             .AddEmail(user.Email!)
-            .AddClaims(claims)
             .AddExpiry(1440)
             .Builder();
 

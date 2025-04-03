@@ -20,13 +20,14 @@ public partial class frmLogin : Form
 
     private async void btnLogin_Click(object sender, EventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(textEmail.Text) || string.IsNullOrWhiteSpace(textPassword.Text))
-        {
-            MessageBox.Show("Preencha todos os campos!");
-            return;
-        }
+        //if (string.IsNullOrWhiteSpace(textEmail.Text) || string.IsNullOrWhiteSpace(textPassword.Text))
+        //{
+        //    MessageBox.Show("Preencha todos os campos!");
+        //    return;
+        //}
 
-        Login login = new(textEmail.Text, textPassword.Text);
+        //Login login = new(textEmail.Text, textPassword.Text);
+        Login login = new("lipe.baterra@gmail.com", "5Alc1cha@");
         var response = await _authService.LoginAsync(login);
 
         if (response.Status)

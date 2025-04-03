@@ -20,6 +20,7 @@ internal class ProductHistoryRepository(AppDbContext context) : IProductHistoryR
         return await (from ph in _context.ProductHistories
                       join p in _context.Products on ph.ProductId equals p.Id
                       join u in _context.Users on ph.UserId equals u.Id
+                      join c in _context.Categories on p.CategoryId equals c.Id
                       where ph.ProductId == productId
                       select new
                       {
@@ -27,7 +28,8 @@ internal class ProductHistoryRepository(AppDbContext context) : IProductHistoryR
                           LastPrice = ph.LastPrice,
                           ProductId = ph.ProductId,
                           UserName = u.Name,
-                          ProductName = p.Name
+                          ProductName = p.Name,
+                          CategoryName = c.Name
                       }).ToListAsync(cancellationToken);
     }
 
@@ -36,6 +38,7 @@ internal class ProductHistoryRepository(AppDbContext context) : IProductHistoryR
         return await (from ph in _context.ProductHistories
                       join p in _context.Products on ph.ProductId equals p.Id
                       join u in _context.Users on ph.UserId equals u.Id
+                      join c in _context.Categories on p.CategoryId equals c.Id
                       where ph.UserId == userId
                       select new
                       {
@@ -43,7 +46,8 @@ internal class ProductHistoryRepository(AppDbContext context) : IProductHistoryR
                           LastPrice = ph.LastPrice,
                           ProductId = ph.ProductId,
                           UserName = u.Name,
-                          ProductName = p.Name
+                          ProductName = p.Name,
+                          CategoryName = c.Name
                       }).ToListAsync(cancellationToken);
     }
 }

@@ -7,18 +7,39 @@ namespace TesteTecWF.Services;
 internal class ProductHistoryService : IProductHistoryService
 {
     private readonly HttpClient _httpClient;
-    private const string BaseUrl = "https://localhost:7090/api/ProductHistory";
+    private const string BaseUrl = "https://localhost:7090/api";
 
     public ProductHistoryService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
 
+    public async Task<ApiResponse<User>> GetUserByEmail(string email)
+    {
+        var response = await _httpClient.GetAsync($"{BaseUrl}/Auth");
+        if (response.IsSuccessStatusCode)
+        {
+            var user = await response.Content.ReadFromJsonAsync<User>();
+            return new ApiResponse<User>
+            {
+                Status = true,
+                Message = "Success",
+                Data = user
+            };
+        }
+
+        return new ApiResponse<User>
+        {
+            Status = false,
+            Message = await response.Content.ReadAsStringAsync()
+        };
+    }
+
     public async Task<ApiResponse<IEnumerable<ProductHistory>>> GetByProductIdAsync(int productId, int userId)
     {
         try
         {
-            var response = await _httpClient.GetAsync($"{BaseUrl}?productId={productId}&userId={userId}");
+            var response = await _httpClient.GetAsync($"{BaseUrl}/ProductHistory?productId={productId}&userId={userId}");
             if (response.IsSuccessStatusCode)
             {
                 var productHistory = await response.Content.ReadFromJsonAsync<IEnumerable<ProductHistory>>();

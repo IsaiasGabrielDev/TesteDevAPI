@@ -11,6 +11,7 @@ public class TokenJwtBuilder
     private string issuer = string.Empty;
     private string audience = string.Empty;
     private string email = string.Empty;
+    private string name = string.Empty;
     private Dictionary<string, string> claims = new();
     private int expiryMinutes = 60;
 
@@ -40,6 +41,11 @@ public class TokenJwtBuilder
     public TokenJwtBuilder AddEmail(string email)
     {
         this.email = email;
+        return this;
+    }
+    public TokenJwtBuilder AddName(string name)
+    {
+        this.name = name;
         return this;
     }
 
@@ -81,7 +87,8 @@ public class TokenJwtBuilder
         {
             new Claim(JwtRegisteredClaimNames.Sub, audience),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.Email, email)
+            new Claim(ClaimTypes.Email, email),
+            new Claim(ClaimTypes.Name, name)
         };
 
         claims.AddRange(this.claims.Select(item => new Claim(item.Key, item.Value)));

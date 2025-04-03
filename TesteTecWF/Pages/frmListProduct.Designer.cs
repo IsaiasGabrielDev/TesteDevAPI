@@ -182,6 +182,7 @@
             btnProductHistoryReport.TabIndex = 9;
             btnProductHistoryReport.Text = "Relatório Histórico de Produto";
             btnProductHistoryReport.UseVisualStyleBackColor = false;
+            btnProductHistoryReport.Click += btnProductHistoryReport_Click;
             // 
             // frmListProduct
             // 
