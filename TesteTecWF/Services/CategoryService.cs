@@ -133,7 +133,7 @@ internal class CategoryService : ICategoryService
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"{BaseUrl}/{id}");
+            var response = await _httpClient.DeleteAsync($"{BaseUrl}?categoryId={id}");
             if (response.IsSuccessStatusCode)
             {
                 return new ApiResponse<bool>

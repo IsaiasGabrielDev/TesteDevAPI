@@ -19,6 +19,8 @@ internal static class Program
         serviceProvider.GetRequiredService<frmRegister>();
         serviceProvider.GetRequiredService<frmListProduct>();
         serviceProvider.GetRequiredService<frmProduct>();
+        serviceProvider.GetRequiredService<frmCategory>();
+        serviceProvider.GetRequiredService<frmCategoryDetails>();
 
         Application.Run(loginForm);
     }
@@ -62,6 +64,8 @@ internal static class Program
         services.AddTransient<frmRegister>();
         services.AddTransient<frmListProduct>();
         services.AddTransient<frmProduct>();
+        services.AddTransient<frmCategory>();
+        services.AddTransient<frmCategoryDetails>();
         services.AddSingleton<IServiceProvider>(sp => sp);
 
         return services.BuildServiceProvider();

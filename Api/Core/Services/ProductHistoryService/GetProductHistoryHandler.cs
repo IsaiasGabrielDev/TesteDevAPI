@@ -13,7 +13,7 @@ internal class GetProductHistoryHandler(
 
     public GetProductHistoryFunction HandlerFunction => Handle;
 
-    private async Task<IEnumerable<ProductHistory>> Handle(
+    private async Task<object> Handle(
         GetProductHistoryRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("GetProductHistoryHandler called with request: {Request}", request);
@@ -31,7 +31,7 @@ internal class GetProductHistoryHandler(
     }
 }
 
-public delegate Task<IEnumerable<ProductHistory>> GetProductHistoryFunction(
+public delegate Task<object> GetProductHistoryFunction(
     GetProductHistoryRequest request,
     CancellationToken cancellationToken);
 

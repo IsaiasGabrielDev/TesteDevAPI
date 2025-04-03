@@ -15,15 +15,35 @@ internal class ProductHistoryRepository(AppDbContext context) : IProductHistoryR
         return entry.Entity;
     }
 
-    public async Task<IEnumerable<ProductHistory>> GetByProductIdAsync(int productId, CancellationToken cancellationToken) =>
-        await _context.ProductHistories
-            .AsNoTracking()
-            .Where(x => x.ProductId == productId)
-            .ToListAsync(cancellationToken);
+    public async Task<object> GetByProductIdAsync(int productId, CancellationToken cancellationToken)
+    {
+        return await (from ph in _context.ProductHistories
+                      join p in _context.Products on ph.ProductId equals p.Id
+                      join u in _context.Users on ph.UserId equals u.Id
+                      where ph.ProductId == productId
+                      select new
+                      {
+                          DateChange = ph.DateChange,
+                          LastPrice = ph.LastPrice,
+                          ProductId = ph.ProductId,
+                          UserName = u.Name,
+                          ProductName = p.Name
+                      }).ToListAsync(cancellationToken);
+    }
 
-    public async Task<IEnumerable<ProductHistory>> GetByUserIdAsync(int userId, CancellationToken cancellationToken) =>
-        await _context.ProductHistories
-            .AsNoTracking()
-            .Where(x => x.UserId == userId)
-            .ToListAsync(cancellationToken);
+    public async Task<object> GetByUserIdAsync(int userId, CancellationToken cancellationToken)
+    {
+        return await (from ph in _context.ProductHistories
+                      join p in _context.Products on ph.ProductId equals p.Id
+                      join u in _context.Users on ph.UserId equals u.Id
+                      where ph.UserId == userId
+                      select new
+                      {
+                          DateChange = ph.DateChange,
+                          LastPrice = ph.LastPrice,
+                          ProductId = ph.ProductId,
+                          UserName = u.Name,
+                          ProductName = p.Name
+                      }).ToListAsync(cancellationToken);
+    }
 }

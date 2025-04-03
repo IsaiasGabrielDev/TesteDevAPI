@@ -138,4 +138,11 @@ public partial class frmListProduct : Form
         frmProduct.Show();
         this.Hide();
     }
+
+    private void btnCategory_Click(object sender, EventArgs e)
+    {
+        var frmCategory = _serviceProvider.GetRequiredService<frmCategory>();
+        frmCategory.Show();
+        this.Hide();
+    }
 }

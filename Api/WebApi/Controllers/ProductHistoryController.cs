@@ -10,7 +10,6 @@ namespace WebApi.Controllers
     public class ProductHistoryController : ControllerBase
     {
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> GetProductHistory(
             [FromServices] GetProductHistoryFunction getProductHistory,
             [FromQuery] int productId,

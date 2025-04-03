@@ -30,16 +30,18 @@
         {
             components = new System.ComponentModel.Container();
             dgvProducts = new DataGridView();
+            Id = new DataGridViewTextBoxColumn();
+            NameProduct = new DataGridViewTextBoxColumn();
+            Price = new DataGridViewTextBoxColumn();
+            CategoryId = new DataGridViewTextBoxColumn();
             productBindingSource = new BindingSource(components);
             btnAddProduct = new Button();
             lblPageNumber = new Label();
             btnNext = new Label();
             btnPrevious = new Label();
             cmbCategories = new ComboBox();
-            Id = new DataGridViewTextBoxColumn();
-            NameProduct = new DataGridViewTextBoxColumn();
-            Price = new DataGridViewTextBoxColumn();
-            CategoryId = new DataGridViewTextBoxColumn();
+            btnCategory = new Button();
+            btnProductHistoryReport = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
             ((System.ComponentModel.ISupportInitialize)productBindingSource).BeginInit();
             SuspendLayout();
@@ -61,6 +63,43 @@
             dgvProducts.TabIndex = 0;
             dgvProducts.SelectionChanged += dgvProducts_SelectionChanged;
             // 
+            // Id
+            // 
+            Id.DataPropertyName = "Id";
+            Id.HeaderText = "Cod. Produto";
+            Id.MinimumWidth = 6;
+            Id.Name = "Id";
+            Id.ReadOnly = true;
+            Id.Width = 125;
+            // 
+            // NameProduct
+            // 
+            NameProduct.DataPropertyName = "Name";
+            NameProduct.HeaderText = "Nome";
+            NameProduct.MinimumWidth = 6;
+            NameProduct.Name = "NameProduct";
+            NameProduct.ReadOnly = true;
+            NameProduct.Width = 125;
+            // 
+            // Price
+            // 
+            Price.DataPropertyName = "Price";
+            Price.HeaderText = "Preço";
+            Price.MinimumWidth = 6;
+            Price.Name = "Price";
+            Price.ReadOnly = true;
+            Price.Width = 125;
+            // 
+            // CategoryId
+            // 
+            CategoryId.DataPropertyName = "CategoryId";
+            CategoryId.HeaderText = "CategoryId";
+            CategoryId.MinimumWidth = 6;
+            CategoryId.Name = "CategoryId";
+            CategoryId.ReadOnly = true;
+            CategoryId.Visible = false;
+            CategoryId.Width = 125;
+            // 
             // productBindingSource
             // 
             productBindingSource.DataSource = typeof(Models.Product);
@@ -69,7 +108,7 @@
             // 
             btnAddProduct.BackColor = Color.Honeydew;
             btnAddProduct.ForeColor = Color.Black;
-            btnAddProduct.Location = new Point(447, 62);
+            btnAddProduct.Location = new Point(447, 97);
             btnAddProduct.Name = "btnAddProduct";
             btnAddProduct.Size = new Size(341, 29);
             btnAddProduct.TabIndex = 3;
@@ -121,42 +160,28 @@
             cmbCategories.TabIndex = 7;
             cmbCategories.SelectedIndexChanged += cmbCategories_SelectedIndexChanged;
             // 
-            // Id
+            // btnCategory
             // 
-            Id.DataPropertyName = "Id";
-            Id.HeaderText = "Cod. Produto";
-            Id.MinimumWidth = 6;
-            Id.Name = "Id";
-            Id.ReadOnly = true;
-            Id.Width = 125;
+            btnCategory.BackColor = Color.Honeydew;
+            btnCategory.ForeColor = Color.Black;
+            btnCategory.Location = new Point(447, 62);
+            btnCategory.Name = "btnCategory";
+            btnCategory.Size = new Size(341, 29);
+            btnCategory.TabIndex = 8;
+            btnCategory.Text = "Gerenciar Categorias";
+            btnCategory.UseVisualStyleBackColor = false;
+            btnCategory.Click += btnCategory_Click;
             // 
-            // NameProduct
+            // btnProductHistoryReport
             // 
-            NameProduct.DataPropertyName = "Name";
-            NameProduct.HeaderText = "Nome";
-            NameProduct.MinimumWidth = 6;
-            NameProduct.Name = "NameProduct";
-            NameProduct.ReadOnly = true;
-            NameProduct.Width = 125;
-            // 
-            // Price
-            // 
-            Price.DataPropertyName = "Price";
-            Price.HeaderText = "Preço";
-            Price.MinimumWidth = 6;
-            Price.Name = "Price";
-            Price.ReadOnly = true;
-            Price.Width = 125;
-            // 
-            // CategoryId
-            // 
-            CategoryId.DataPropertyName = "CategoryId";
-            CategoryId.HeaderText = "CategoryId";
-            CategoryId.MinimumWidth = 6;
-            CategoryId.Name = "CategoryId";
-            CategoryId.ReadOnly = true;
-            CategoryId.Visible = false;
-            CategoryId.Width = 125;
+            btnProductHistoryReport.BackColor = Color.Honeydew;
+            btnProductHistoryReport.ForeColor = Color.Black;
+            btnProductHistoryReport.Location = new Point(447, 132);
+            btnProductHistoryReport.Name = "btnProductHistoryReport";
+            btnProductHistoryReport.Size = new Size(341, 29);
+            btnProductHistoryReport.TabIndex = 9;
+            btnProductHistoryReport.Text = "Relatório Histórico de Produto";
+            btnProductHistoryReport.UseVisualStyleBackColor = false;
             // 
             // frmListProduct
             // 
@@ -164,6 +189,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkGray;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnProductHistoryReport);
+            Controls.Add(btnCategory);
             Controls.Add(cmbCategories);
             Controls.Add(btnPrevious);
             Controls.Add(btnNext);
@@ -194,5 +221,7 @@
         private DataGridViewTextBoxColumn NameProduct;
         private DataGridViewTextBoxColumn Price;
         private DataGridViewTextBoxColumn CategoryId;
+        private Button btnCategory;
+        private Button btnProductHistoryReport;
     }
 }
