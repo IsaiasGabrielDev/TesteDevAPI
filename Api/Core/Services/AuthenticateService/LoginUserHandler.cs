@@ -22,7 +22,7 @@ internal sealed class LoginUserHandler(
 
         Dictionary<string, string> claims = new()
         {
-            { "userName", user.Name! },
+            { "userName", user.Name! }
         };
 
         var token = new TokenJwtBuilder()

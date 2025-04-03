@@ -18,6 +18,7 @@ namespace Infra
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProductHistoryRepository, ProductHistoryRepository>();
             return services;
         }
     }

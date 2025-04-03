@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using TesteTecWF.Interfaces;
 using TesteTecWF.Models;
 
@@ -32,6 +33,8 @@ public partial class frmProduct : Form
             txtName.Text = _productEdit.Name;
             txtPrice.Text = _productEdit.Price.ToString();
             cmbCategories.SelectedValue = _productEdit.CategoryId;
+
+            btnDeleteProduct.Visible = true;
         }
     }
 
@@ -133,5 +136,32 @@ public partial class frmProduct : Form
         var frmListProduct = _serviceProvider.GetRequiredService<frmListProduct>();
         frmListProduct.Show();
         this.Hide();
+    }
+
+    private async void btnDeleteProduct_Click(object sender, EventArgs e)
+    {
+        if(_productEdit is null)
+        {
+            MessageBox.Show("Selecione um produto para excluir");
+            RedirectToList();
+        }
+
+        if (MessageBox.Show("Você tem certeza que deseja excluir o produto?", "Excluir Produto", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+        {
+            return;
+        }
+
+        bool response = await _productService.DeleteProductAsync(_productEdit!.Id!.Value);
+
+        if(response)
+        {
+            MessageBox.Show("Produto excluído com sucesso");
+            RedirectToList();
+        }
+        else
+        {
+            MessageBox.Show("Erro ao excluir o produto");
+            return;
+        }
     }
 }

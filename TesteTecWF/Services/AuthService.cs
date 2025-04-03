@@ -19,36 +19,58 @@ internal class AuthService : IAuthService
 
     public async Task<ApiResponse<object>> RegisterAsync(Register register)
     {
-        var json = JsonSerializer.Serialize(register);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        var response = await _httpClient.PostAsync($"{baseUrl}/register", content);
-        return new ApiResponse<object>
+        try
         {
-            Status = response.IsSuccessStatusCode,
-            Message = response.ReasonPhrase,
-            Data = await response.Content.ReadAsStringAsync()
-        };
+            var json = JsonSerializer.Serialize(register);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync($"{baseUrl}/register", content);
+            return new ApiResponse<object>
+            {
+                Status = response.IsSuccessStatusCode,
+                Message = response.ReasonPhrase,
+                Data = await response.Content.ReadAsStringAsync()
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<object>
+            {
+                Status = false,
+                Message = ex.Message
+            };
+        }
     }
 
     public async Task<ApiResponse<object>> LoginAsync(Login login)
     {
-        var json = JsonSerializer.Serialize(login);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        var response = await _httpClient.PostAsync($"{baseUrl}/login", content);
-        var responseString = await response.Content.ReadAsStringAsync();
-        if (response.IsSuccessStatusCode)
+        try
         {
+            var json = JsonSerializer.Serialize(login);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            _tokenService.SetToken(responseString!);
+            var response = await _httpClient.PostAsync($"{baseUrl}/login", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+
+                _tokenService.SetToken(responseString!);
+            }
+
+            return new ApiResponse<object>
+            {
+                Status = response.IsSuccessStatusCode,
+                Message = responseString
+            };
         }
-
-        return new ApiResponse<object>
+        catch (Exception ex)
         {
-            Status = response.IsSuccessStatusCode,
-            Message = responseString
-        };
+            return new ApiResponse<object>
+            {
+                Status = false,
+                Message = ex.Message
+            };
+        }
     }
 
     public void LogoutAsync()

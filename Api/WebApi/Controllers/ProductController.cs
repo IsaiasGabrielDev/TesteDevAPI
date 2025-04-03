@@ -3,6 +3,7 @@ using Core.Services.ProductServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace WebApi.Controllers;
 
@@ -32,7 +33,11 @@ public class ProductController : ControllerBase
         [FromBody] AddProductDTO addProductDTO,
         CancellationToken cancellation)
     {
-        var (product, errorMessage) = await function(addProductDTO, cancellation);
+        string userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value!;
+        if (string.IsNullOrEmpty(userEmail))
+            return BadRequest("Usuário não autorizado");
+
+        var (product, errorMessage) = await function(addProductDTO, userEmail, cancellation);
         return string.IsNullOrEmpty(errorMessage)
             ? Ok(product)
             : BadRequest(errorMessage);
@@ -44,7 +49,11 @@ public class ProductController : ControllerBase
         [FromBody] Product product,
         CancellationToken cancellationToken)
     {
-        var (updatedProduct, errorMessage) = await function(product, cancellationToken);
+        string userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value!;
+        if (string.IsNullOrEmpty(userEmail))
+            return BadRequest("Usuário não autorizado");
+
+        var (updatedProduct, errorMessage) = await function(product, userEmail, cancellationToken);
         return string.IsNullOrEmpty(errorMessage)
             ? Ok(updatedProduct)
             : BadRequest(errorMessage);

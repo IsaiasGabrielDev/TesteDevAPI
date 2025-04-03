@@ -3,6 +3,7 @@ using Core.Entities;
 using Core.Helpers;
 using Core.Services.AuthenticateService;
 using Core.Services.CategoryServices;
+using Core.Services.ProductHistoryService;
 using Core.Services.ProductServices;
 using Core.Validators;
 using FluentValidation;
@@ -69,6 +70,11 @@ namespace Core
             #region Inject User
             services.AddTransientFunction<RegisterUserFunction, RegisterUserHandler>();
             services.AddTransientFunction<LoginUserFunction, LoginUserHandler>();
+            #endregion
+
+            #region Inject ProductHistory
+            services.AddTransientFunction<GetProductHistoryFunction, GetProductHistoryHandler>();
+            services.AddTransientFunction<AddProductHistoryFunction, AddProductHistoryHandler>();
             #endregion
 
             return services;

@@ -18,79 +18,130 @@ internal sealed class ProductService : IProductService
 
     public async Task<ApiResponse<ResponseProduct>> GetProductsAsync(int pageNumber, int pageSize)
     {
-        var response = await _httpClient.GetAsync($"{baseUrl}?pageNumber={pageNumber}&pageSize={pageSize}");
-
-        ResponseProduct responseProduct = await response.Content.ReadFromJsonAsync<ResponseProduct>();
-        return new ApiResponse<ResponseProduct>
+        try
         {
-            Status = response.IsSuccessStatusCode,
-            Message = response.ReasonPhrase,
-            Data = responseProduct
-        };
+            var response = await _httpClient.GetAsync($"{baseUrl}?pageNumber={pageNumber}&pageSize={pageSize}");
+
+            ResponseProduct responseProduct = await response.Content.ReadFromJsonAsync<ResponseProduct>();
+            return new ApiResponse<ResponseProduct>
+            {
+                Status = response.IsSuccessStatusCode,
+                Message = response.ReasonPhrase,
+                Data = responseProduct
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<ResponseProduct>
+            {
+                Status = false,
+                Message = ex.Message
+            };
+        }
     }
 
     public async Task<ApiResponse<Product>> GetProductAsync(int id)
     {
-        var response = await _httpClient.GetAsync($"{baseUrl}?productId{id}");
-        return new ApiResponse<Product>
+        try
         {
-            Status = response.IsSuccessStatusCode,
-            Message = response.ReasonPhrase,
-            Data = await response.Content.ReadFromJsonAsync<Product>()
-        };
+            var response = await _httpClient.GetAsync($"{baseUrl}?productId{id}");
+            return new ApiResponse<Product>
+            {
+                Status = response.IsSuccessStatusCode,
+                Message = response.ReasonPhrase,
+                Data = await response.Content.ReadFromJsonAsync<Product>()
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<Product>
+            {
+                Status = false,
+                Message = ex.Message
+            };
+        }
     }
 
     public async Task<ApiResponse<Product>> AddProductAsync(Product product)
     {
-        var content = CreateContent(product);
-
-        var response = await _httpClient.PostAsync(baseUrl, content);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
+            var content = CreateContent(product);
+
+            var response = await _httpClient.PostAsync(baseUrl, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return new ApiResponse<Product>
+                {
+                    Status = response.IsSuccessStatusCode,
+                    Message = response.ReasonPhrase,
+                    Data = await response.Content.ReadFromJsonAsync<Product>()
+                };
+            }
+
             return new ApiResponse<Product>
             {
                 Status = response.IsSuccessStatusCode,
-                Message = response.ReasonPhrase,
-                Data = await response.Content.ReadFromJsonAsync<Product>()
+                Message = await response.Content.ReadAsStringAsync()
             };
         }
-
-        return new ApiResponse<Product>
+        catch (Exception ex)
         {
-            Status = response.IsSuccessStatusCode,
-            Message = await response.Content.ReadAsStringAsync()
-        };
+            return new ApiResponse<Product>
+            {
+                Status = false,
+                Message = ex.Message
+            };
+        }
     }
 
     public async Task<ApiResponse<Product>> UpdateProductAsync(Product product)
     {
-        var content = CreateContent(product);
-
-        var response = await _httpClient.PutAsync(baseUrl, content);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
+            var content = CreateContent(product);
+
+            var response = await _httpClient.PutAsync(baseUrl, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return new ApiResponse<Product>
+                {
+                    Status = response.IsSuccessStatusCode,
+                    Message = response.ReasonPhrase,
+                    Data = await response.Content.ReadFromJsonAsync<Product>()
+                };
+            }
+
             return new ApiResponse<Product>
             {
                 Status = response.IsSuccessStatusCode,
-                Message = response.ReasonPhrase,
-                Data = await response.Content.ReadFromJsonAsync<Product>()
+                Message = await response.Content.ReadAsStringAsync()
             };
         }
-
-        return new ApiResponse<Product>
+        catch (Exception ex)
         {
-            Status = response.IsSuccessStatusCode,
-            Message = await response.Content.ReadAsStringAsync()
-        };
+            return new ApiResponse<Product>
+            {
+                Status = false,
+                Message = ex.Message
+            };
+        }
     }
 
     public async Task<bool> DeleteProductAsync(int id)
     {
-        var response = await _httpClient.DeleteAsync($"{baseUrl}?productId={id}");
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"{baseUrl}?productId={id}");
 
-        return response.IsSuccessStatusCode;
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
     }
 
     private StringContent CreateContent(object obj)

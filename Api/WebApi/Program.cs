@@ -1,6 +1,7 @@
 using Infra;
 using Core;
 using Microsoft.OpenApi.Models;
+using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSharedExtensionsInfra(builder.Configuration);
 builder.Services.AddApplicationHandlers();
+builder.Services.AddTransient<ExceptionMiddleware>();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api teste técnico", Version = "v1" });
@@ -51,6 +53,8 @@ if (app.Environment.IsDevelopment())
     });
     app.MapOpenApi();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

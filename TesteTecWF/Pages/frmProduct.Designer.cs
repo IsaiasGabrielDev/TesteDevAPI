@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            btnDeleteProduct = new Button();
             txtPrice = new TextBox();
             btnSalvar = new Button();
             label3 = new Label();
@@ -42,6 +43,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(btnDeleteProduct);
             panel1.Controls.Add(txtPrice);
             panel1.Controls.Add(btnSalvar);
             panel1.Controls.Add(label3);
@@ -49,10 +51,22 @@
             panel1.Controls.Add(label2);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(cmbCategories);
-            panel1.Location = new Point(204, 96);
+            panel1.Location = new Point(208, 71);
             panel1.Name = "panel1";
-            panel1.Size = new Size(342, 266);
+            panel1.Size = new Size(342, 302);
             panel1.TabIndex = 0;
+            // 
+            // btnDeleteProduct
+            // 
+            btnDeleteProduct.ForeColor = SystemColors.ActiveCaptionText;
+            btnDeleteProduct.Location = new Point(3, 260);
+            btnDeleteProduct.Name = "btnDeleteProduct";
+            btnDeleteProduct.Size = new Size(336, 29);
+            btnDeleteProduct.TabIndex = 8;
+            btnDeleteProduct.Text = "Deletar";
+            btnDeleteProduct.UseVisualStyleBackColor = true;
+            btnDeleteProduct.Visible = false;
+            btnDeleteProduct.Click += btnDeleteProduct_Click;
             // 
             // txtPrice
             // 
@@ -158,5 +172,6 @@
         private Button btnSalvar;
         private TextBox txtPrice;
         private Label lblVoltar;
+        private Button btnDeleteProduct;
     }
 }
