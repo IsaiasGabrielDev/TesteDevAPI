@@ -3,7 +3,9 @@ using TesteTecWF.Handler;
 using TesteTecWF.Interfaces;
 using TesteTecWF.Pages;
 using TesteTecWF.Reports;
+using TesteTecWF.Reports.ProductStockReport;
 using TesteTecWF.Services;
+using TesteTecWF.Strategy;
 
 namespace TesteTecWF;
 
@@ -23,6 +25,7 @@ internal static class Program
         serviceProvider.GetRequiredService<frmCategory>();
         serviceProvider.GetRequiredService<frmCategoryDetails>();
         serviceProvider.GetRequiredService<frmProductHistoryReport>();
+        serviceProvider.GetRequiredService<frmProductStock>();
 
         Application.Run(loginForm);
     }
@@ -69,6 +72,8 @@ internal static class Program
             return new ProductHistoryService(httpClient);
         });
 
+        services.AddTransient<IRenderReports, RenderReport>();
+
         services.AddTransient<frmLogin>();
         services.AddTransient<frmRegister>();
         services.AddTransient<frmListProduct>();
@@ -76,6 +81,7 @@ internal static class Program
         services.AddTransient<frmCategory>();
         services.AddTransient<frmCategoryDetails>();
         services.AddTransient<frmProductHistoryReport>();
+        services.AddTransient<frmProductStock>();
         services.AddSingleton<IServiceProvider>(sp => sp);
 
         return services.BuildServiceProvider();

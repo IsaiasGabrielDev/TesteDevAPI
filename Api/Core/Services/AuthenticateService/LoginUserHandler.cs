@@ -1,13 +1,16 @@
 ﻿using Core.Abstraction;
 using Core.Helpers;
 using Core.Services.AuthenticateService.Token;
+using Microsoft.Extensions.Logging;
 
 namespace Core.Services.AuthenticateService;
 
 internal sealed class LoginUserHandler(
-    IUserRepository repository) : IFunctionHandler<LoginUserFunction>
+    IUserRepository repository,
+    ILogger<LoginUserFunction> logger) : IFunctionHandler<LoginUserFunction>
 {
     private readonly IUserRepository _repository = repository;
+    private readonly ILogger<LoginUserFunction> _logger = logger;
 
     public LoginUserFunction HandlerFunction => Handle;
 
@@ -15,10 +18,16 @@ internal sealed class LoginUserHandler(
     {
         var user = await _repository.GetUserByEmail(login.Email, cancellationToken);
         if (user is null)
+        {
+            _logger.LogWarning("LoginUserHandler: User not found for email: {Email}", login.Email);
             return new LoginResponse(false, "Usuário não encontrado");
+        }
 
         if (!CryptographyHelper.VerifyPassword(login.Password, user.Password!))
+        {
+            _logger.LogWarning("LoginUserHandler: Incorrect password for email: {Email}", login.Email);
             return new LoginResponse(false, "Senha incorreta");
+        }
 
         var token = new TokenJwtBuilder()
             .AddSecurityKey(JwtSecurityKey.Create(Config.SecurityTokenKey))

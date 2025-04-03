@@ -2,6 +2,7 @@
 using TesteTecWF.Interfaces;
 using TesteTecWF.Models;
 using TesteTecWF.Reports;
+using TesteTecWF.Reports.ProductStockReport;
 
 namespace TesteTecWF.Pages;
 
@@ -151,6 +152,13 @@ public partial class frmListProduct : Form
     {
         var fromProductHistoryReport = _serviceProvider.GetRequiredService<frmProductHistoryReport>();
         fromProductHistoryReport.Show();
+        this.Hide();
+    }
+
+    private void btnReportStock_Click(object sender, EventArgs e)
+    {
+        var frmProductStock = _serviceProvider.GetRequiredService<frmProductStock>();
+        frmProductStock.Show();
         this.Hide();
     }
 }

@@ -35,11 +35,11 @@ internal class ProductHistoryService : IProductHistoryService
         };
     }
 
-    public async Task<ApiResponse<IEnumerable<ProductHistory>>> GetByProductIdAsync(int productId, int userId)
+    public async Task<ApiResponse<IEnumerable<ProductHistory>>> GetByProductIdAsync(int categoryId, int userId)
     {
         try
         {
-            var response = await _httpClient.GetAsync($"{BaseUrl}/ProductHistory?productId={productId}&userId={userId}");
+            var response = await _httpClient.GetAsync($"{BaseUrl}/ProductHistory?categoryId={categoryId}&userId={userId}");
             if (response.IsSuccessStatusCode)
             {
                 var productHistory = await response.Content.ReadFromJsonAsync<IEnumerable<ProductHistory>>();

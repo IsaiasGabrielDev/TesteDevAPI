@@ -9,11 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Reports\ProductHystory\ProductHistory.rdlc" />
+    <None Remove="Reports\ProductHistoryReport\ProductHistory.rdlc" />
+    <None Remove="Reports\ProductStockReport\ProductStock.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Reports\ProductHystory\ProductHistory.rdlc">
+    <Content Include="Reports\ProductHistoryReport\ProductHistory.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ProductStockReport\ProductStock.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

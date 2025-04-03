@@ -27,6 +27,17 @@ public class ProductController : ControllerBase
             : Ok(products);
     }
 
+    [HttpGet("stock")]
+    public async Task<IActionResult> GetProductReport(
+        [FromServices] GetProductsReportStockFunction function,
+        CancellationToken cancellationToken)
+    {
+        var obj = await function(cancellationToken);
+        return obj is not null
+            ? Ok(obj)
+            : BadRequest("Erro ao obter os dados do relatório");
+    }
+
     [HttpPost]
     public async Task<IActionResult> AddProduct(
         [FromServices] AddProductFunction function,

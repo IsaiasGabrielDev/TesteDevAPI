@@ -17,9 +17,9 @@ internal class GetProductHistoryHandler(
         GetProductHistoryRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("GetProductHistoryHandler called with request: {Request}", request);
-        if (request.ProductId > 0)
+        if (request.CategoryId > 0)
         {
-            return await _repository.GetByProductIdAsync(request.ProductId, cancellationToken);
+            return await _repository.GetByCategoryIdAsync(request.CategoryId, cancellationToken);
         }
         else if (request.UserId > 0)
         {
@@ -36,5 +36,5 @@ public delegate Task<object> GetProductHistoryFunction(
     CancellationToken cancellationToken);
 
 public sealed record class GetProductHistoryRequest(
-    int ProductId,
+    int CategoryId,
     int UserId);

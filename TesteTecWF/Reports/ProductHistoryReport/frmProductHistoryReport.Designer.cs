@@ -30,28 +30,27 @@
         {
             panelFilter = new Panel();
             btnGenereteReport = new Button();
-            lblVoltar = new Label();
             label4 = new Label();
-            lblProduct = new Label();
-            cmbProduct = new ComboBox();
+            lblCategory = new Label();
+            cmbCategory = new ComboBox();
             cmbFiltros = new ComboBox();
             label1 = new Label();
             reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
+            lblVoltar = new Label();
             panelFilter.SuspendLayout();
             SuspendLayout();
             // 
             // panelFilter
             // 
             panelFilter.Controls.Add(btnGenereteReport);
-            panelFilter.Controls.Add(lblVoltar);
             panelFilter.Controls.Add(label4);
-            panelFilter.Controls.Add(lblProduct);
-            panelFilter.Controls.Add(cmbProduct);
+            panelFilter.Controls.Add(lblCategory);
+            panelFilter.Controls.Add(cmbCategory);
             panelFilter.Controls.Add(cmbFiltros);
             panelFilter.Controls.Add(label1);
-            panelFilter.Location = new Point(12, 12);
+            panelFilter.Location = new Point(181, 119);
             panelFilter.Name = "panelFilter";
-            panelFilter.Size = new Size(776, 426);
+            panelFilter.Size = new Size(402, 189);
             panelFilter.TabIndex = 0;
             // 
             // btnGenereteReport
@@ -64,18 +63,6 @@
             btnGenereteReport.UseVisualStyleBackColor = true;
             btnGenereteReport.Click += btnGenereteReport_Click;
             // 
-            // lblVoltar
-            // 
-            lblVoltar.AutoSize = true;
-            lblVoltar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblVoltar.ForeColor = SystemColors.Control;
-            lblVoltar.Location = new Point(704, 397);
-            lblVoltar.Name = "lblVoltar";
-            lblVoltar.Size = new Size(69, 28);
-            lblVoltar.TabIndex = 7;
-            lblVoltar.Text = "Voltar";
-            lblVoltar.Click += lblVoltar_Click;
-            // 
             // label4
             // 
             label4.AutoSize = true;
@@ -86,25 +73,25 @@
             label4.TabIndex = 6;
             label4.Text = "Filtros";
             // 
-            // lblProduct
+            // lblCategory
             // 
-            lblProduct.AutoSize = true;
-            lblProduct.ForeColor = SystemColors.Control;
-            lblProduct.Location = new Point(328, 103);
-            lblProduct.Name = "lblProduct";
-            lblProduct.Size = new Size(62, 20);
-            lblProduct.TabIndex = 4;
-            lblProduct.Text = "Produto";
-            lblProduct.Visible = false;
+            lblCategory.AutoSize = true;
+            lblCategory.ForeColor = SystemColors.Control;
+            lblCategory.Location = new Point(328, 103);
+            lblCategory.Name = "lblCategory";
+            lblCategory.Size = new Size(74, 20);
+            lblCategory.TabIndex = 4;
+            lblCategory.Text = "Categoria";
+            lblCategory.Visible = false;
             // 
-            // cmbProduct
+            // cmbCategory
             // 
-            cmbProduct.FormattingEnabled = true;
-            cmbProduct.Location = new Point(0, 100);
-            cmbProduct.Name = "cmbProduct";
-            cmbProduct.Size = new Size(322, 28);
-            cmbProduct.TabIndex = 2;
-            cmbProduct.Visible = false;
+            cmbCategory.FormattingEnabled = true;
+            cmbCategory.Location = new Point(0, 100);
+            cmbCategory.Name = "cmbCategory";
+            cmbCategory.Size = new Size(322, 28);
+            cmbCategory.TabIndex = 2;
+            cmbCategory.Visible = false;
             // 
             // cmbFiltros
             // 
@@ -120,7 +107,7 @@
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = SystemColors.Control;
-            label1.Location = new Point(256, 1);
+            label1.Location = new Point(61, 3);
             label1.Name = "label1";
             label1.Size = new Size(260, 28);
             label1.TabIndex = 0;
@@ -135,12 +122,24 @@
             reportViewer1.Size = new Size(396, 246);
             reportViewer1.TabIndex = 0;
             // 
+            // lblVoltar
+            // 
+            lblVoltar.AutoSize = true;
+            lblVoltar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblVoltar.ForeColor = SystemColors.Control;
+            lblVoltar.Location = new Point(719, 410);
+            lblVoltar.Name = "lblVoltar";
+            lblVoltar.Size = new Size(69, 28);
+            lblVoltar.TabIndex = 8;
+            lblVoltar.Text = "Voltar";
+            // 
             // frmProductHistoryReport
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkGray;
             ClientSize = new Size(800, 450);
+            Controls.Add(lblVoltar);
             Controls.Add(panelFilter);
             FormBorderStyle = FormBorderStyle.None;
             Name = "frmProductHistoryReport";
@@ -150,6 +149,7 @@
             panelFilter.ResumeLayout(false);
             panelFilter.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -158,10 +158,10 @@
         private ComboBox cmbFiltros;
         private Label label1;
         private Label label4;
-        private Label lblProduct;
-        private ComboBox cmbProduct;
-        private Label lblVoltar;
+        private Label lblCategory;
+        private ComboBox cmbCategory;
         private Button btnGenereteReport;
         private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
+        private Label lblVoltar;
     }
 }

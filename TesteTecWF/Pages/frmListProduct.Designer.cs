@@ -42,6 +42,7 @@
             cmbCategories = new ComboBox();
             btnCategory = new Button();
             btnProductHistoryReport = new Button();
+            btnReportStock = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
             ((System.ComponentModel.ISupportInitialize)productBindingSource).BeginInit();
             SuspendLayout();
@@ -184,12 +185,25 @@
             btnProductHistoryReport.UseVisualStyleBackColor = false;
             btnProductHistoryReport.Click += btnProductHistoryReport_Click;
             // 
+            // btnReportStock
+            // 
+            btnReportStock.BackColor = Color.Honeydew;
+            btnReportStock.ForeColor = Color.Black;
+            btnReportStock.Location = new Point(447, 167);
+            btnReportStock.Name = "btnReportStock";
+            btnReportStock.Size = new Size(341, 29);
+            btnReportStock.TabIndex = 10;
+            btnReportStock.Text = "Relatório de Estoque";
+            btnReportStock.UseVisualStyleBackColor = false;
+            btnReportStock.Click += btnReportStock_Click;
+            // 
             // frmListProduct
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkGray;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnReportStock);
             Controls.Add(btnProductHistoryReport);
             Controls.Add(btnCategory);
             Controls.Add(cmbCategories);
@@ -224,5 +238,6 @@
         private DataGridViewTextBoxColumn CategoryId;
         private Button btnCategory;
         private Button btnProductHistoryReport;
+        private Button btnReportStock;
     }
 }

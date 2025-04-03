@@ -8,22 +8,26 @@ using TesteTecWF.Interfaces;
 using TesteTecWF.Models;
 using TesteTecWF.Pages;
 using TesteTecWF.Services;
+using TesteTecWF.Strategy;
 
 namespace TesteTecWF.Reports;
 
 public partial class frmProductHistoryReport : Form
 {
-    private readonly IProductService _productService;
+    private readonly ICategoryService _categoryService;
     private readonly IServiceProvider _serviceProvider;
     private readonly IProductHistoryService _productHistoryService;
+    private readonly IRenderReports _renderReports;
     private readonly TokenService _tokenService;
-    public frmProductHistoryReport(IProductService productService, IServiceProvider serviceProvider, TokenService tokenService, IProductHistoryService productHistoryService)
+
+    public frmProductHistoryReport(ICategoryService categoryService, IServiceProvider serviceProvider, IProductHistoryService productHistoryService, TokenService tokenService, IRenderReports renderReports)
     {
         InitializeComponent();
-        _productService = productService;
+        _categoryService = categoryService;
         _serviceProvider = serviceProvider;
-        _tokenService = tokenService;
         _productHistoryService = productHistoryService;
+        _tokenService = tokenService;
+        _renderReports = renderReports;
     }
 
     private void frmProductHistoryReport_Load(object sender, EventArgs e)
@@ -31,7 +35,7 @@ public partial class frmProductHistoryReport : Form
         cmbFiltros.DataSource = new List<string>()
         {
             "",
-            "Produtos",
+            "Categorias",
         };
     }
 
@@ -41,33 +45,33 @@ public partial class frmProductHistoryReport : Form
         {
             switch (selectedItem)
             {
-                case "Produtos":
-                    await LoadProducts();
+                case "Categorias":
+                    await LoadCategories();
                     break;
                 default:
-                    cmbProduct.Visible = false;
-                    lblProduct.Visible = false;
+                    cmbCategory.Visible = false;
+                    lblCategory.Visible = false;
                     break;
             }
         }
     }
 
-    private async Task LoadProducts()
+    private async Task LoadCategories()
     {
-        var response = await _productService.GetProductsAsync(1, int.MaxValue);
+        var response = await _categoryService.GetAllCategoriesAsync();
 
         if (response.Status)
         {
-            var products = response.Data.Products.ToList();
-            cmbProduct.DataSource = products;
-            cmbProduct.DisplayMember = "Name";
-            cmbProduct.ValueMember = "Id";
-            cmbProduct.Visible = true;
-            lblProduct.Visible = true;
+            var categories = response.Data.ToList();
+            cmbCategory.DataSource = categories;
+            cmbCategory.DisplayMember = "Name";
+            cmbCategory.ValueMember = "Id";
+            cmbCategory.Visible = true;
+            lblCategory.Visible = true;
         }
         else
         {
-            MessageBox.Show("Erro ao carregar produtos: " + response.Message);
+            MessageBox.Show("Erro ao carregar as categorias: " + response.Message);
         }
     }
 
@@ -84,8 +88,8 @@ public partial class frmProductHistoryReport : Form
         {
             switch (selectedItem)
             {
-                case "Produtos":
-                    await GenerateProductReport();
+                case "Categorias":
+                    await GenerateCategoriesReport();
                     break;
                 default:
                     await GenerateUserReport();
@@ -94,11 +98,11 @@ public partial class frmProductHistoryReport : Form
         }
     }
 
-    private async Task GenerateProductReport()
+    private async Task GenerateCategoriesReport()
     {
-        if (cmbProduct.SelectedValue is int productId && productId > 0)
+        if (cmbCategory.SelectedValue is int categoryId && categoryId > 0)
         {
-            var reportData = await _productHistoryService.GetByProductIdAsync(productId, 0);
+            var reportData = await _productHistoryService.GetByProductIdAsync(categoryId, 0);
 
             if (reportData.Status)
             {
@@ -157,24 +161,12 @@ public partial class frmProductHistoryReport : Form
 
     private void RenderReport(IEnumerable<ProductHistory> productHistories)
     {
-        string reportPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Reports", "ProductHystory", "ProductHistory.rdlc");
-
-        if (!File.Exists(reportPath))
+        _renderReports.Render(new RenderReportModel
         {
-            MessageBox.Show("Arquivo de relatório não encontrado.");
-            return;
-        }
-
-        using FileStream reportDefinition = new FileStream(reportPath, FileMode.Open, FileAccess.Read);
-
-        LocalReport report = new LocalReport();
-        report.LoadReportDefinition(reportDefinition);
-        report.DataSources.Add(new ReportDataSource("DataSetProductHistory", productHistories));
-        byte[] pdf = report.Render("PDF");
-
-        string tempFilePath = Path.Combine(Path.GetTempPath(), "historico_produto.pdf");
-        File.WriteAllBytes(tempFilePath, pdf);
-
-        Process.Start(new ProcessStartInfo(tempFilePath) { UseShellExecute = true });
+            FolderName = "ProductHistory",
+            ReportName = "ProductHistory",
+            DataSetName = "DataSetProductHistory",
+            Data = productHistories
+        });
     }
 }

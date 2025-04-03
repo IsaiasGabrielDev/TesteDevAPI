@@ -19,11 +19,24 @@ internal sealed class ProductRepository(AppDbContext context) : IProductReposito
             Products = products,
             TotalRecords = totalRecords
         };
-    }
-        
+    }        
 
     public async Task<Product> GetById(int productId, CancellationToken cancellationToken) =>
         await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
+
+    public async Task<object> GetProductsReportStock(CancellationToken cancellationToken)
+    {
+        int totalProducts = await _context.Products.AsNoTracking().CountAsync(cancellationToken);
+        decimal totalStockValue = await _context.Products.AsNoTracking().SumAsync(p => p.Price, cancellationToken);
+        decimal averageProductPrices = Math.Round(totalStockValue / totalProducts, 2);
+
+        return new
+        {
+            TotalProducts = totalProducts,
+            TotalStockValue = totalStockValue,
+            AverageProductPrices = averageProductPrices
+        };
+    }
     #endregion
 
     #region Insert

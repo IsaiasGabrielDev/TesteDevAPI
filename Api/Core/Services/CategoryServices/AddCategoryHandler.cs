@@ -2,18 +2,20 @@
 using Core.Entities;
 using FluentValidation;
 using FluentValidation.Results;
-using System.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace Core.Services.CategoryServices;
 
 internal class AddCategoryHandler(IUnitOfWork unitOfWork,
     ICategoryRepository categoryRepository,
-    IValidator<Category> validator)
+    IValidator<Category> validator,
+    ILogger<AddCategoryFunction> logger)
     : IFunctionHandler<AddCategoryFunction>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IValidator<Category> _validator = validator;
+    private readonly ILogger<AddCategoryFunction> _logger = logger;
 
     public AddCategoryFunction HandlerFunction => Handle;
 
@@ -29,12 +31,15 @@ internal class AddCategoryHandler(IUnitOfWork unitOfWork,
 
             var addedCategory = await _categoryRepository.AddCategory(category, cancellationToken);
             var rowsAffected = await _unitOfWork.CommitAsync(cancellationToken);
-            return rowsAffected > 0
-                ? (addedCategory, string.Empty)
-                : (null!, "Falha ao adicionar a categoria");
+            if(rowsAffected > 0)
+                return (addedCategory, string.Empty);
+
+            _logger.LogError("Failed to add category");
+            return (null!, "Falha ao adicionar a categoria");
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, ex.Message);
             throw new Exception(ex.Message);
         }
     }

@@ -15,13 +15,13 @@ internal class ProductHistoryRepository(AppDbContext context) : IProductHistoryR
         return entry.Entity;
     }
 
-    public async Task<object> GetByProductIdAsync(int productId, CancellationToken cancellationToken)
+    public async Task<object> GetByCategoryIdAsync(int categoryId, CancellationToken cancellationToken)
     {
         return await (from ph in _context.ProductHistories
                       join p in _context.Products on ph.ProductId equals p.Id
                       join u in _context.Users on ph.UserId equals u.Id
                       join c in _context.Categories on p.CategoryId equals c.Id
-                      where ph.ProductId == productId
+                      where c.Id == categoryId
                       select new
                       {
                           DateChange = ph.DateChange,

@@ -62,6 +62,28 @@ internal sealed class ProductService : IProductService
         }
     }
 
+    public async Task<ApiResponse<ProductStock>> GetProductStockAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"{baseUrl}/stock");
+            return new ApiResponse<ProductStock>
+            {
+                Status = response.IsSuccessStatusCode,
+                Message = response.ReasonPhrase,
+                Data = await response.Content.ReadFromJsonAsync<ProductStock>()
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<ProductStock>
+            {
+                Status = false,
+                Message = ex.Message
+            };
+        }
+    }
+
     public async Task<ApiResponse<Product>> AddProductAsync(Product product)
     {
         try

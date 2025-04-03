@@ -12,11 +12,11 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductHistory(
             [FromServices] GetProductHistoryFunction getProductHistory,
-            [FromQuery] int productId,
+            [FromQuery] int categoryId,
             [FromQuery] int userId,
             CancellationToken cancellationToken)
         {
-            var request = new GetProductHistoryRequest(productId, userId);
+            var request = new GetProductHistoryRequest(categoryId, userId);
             var result = await getProductHistory(request, cancellationToken);
             return Ok(result);
         }

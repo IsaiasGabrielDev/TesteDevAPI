@@ -65,6 +65,7 @@ namespace Core
             services.AddTransientFunction<AddProductFunction, AddProductHandler>();
             services.AddTransientFunction<UpdateProductFunction, UpdateProductHandler>();
             services.AddTransientFunction<DeleteProductFunction, DeleteProductHandler>();
+            services.AddTransientFunction<GetProductsReportStockFunction, GetProductsReportStockHandler>();
             #endregion
 
             #region Inject User
